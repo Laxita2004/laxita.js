@@ -1,13 +1,11 @@
 /** @jsx createElement */
 
-function createElement(type, props, ...children) {
-    return { type, props: props || {}, children };
-}
+import { createElement } from "./createElement";
 
 const tree = (
     <div id="root">
         <h1>Hello from laxita.js</h1>
-        <p>This is a test JSX</p>
+        <p>This is a <strong>custom</strong> framework</p>
     </div>
 );
 

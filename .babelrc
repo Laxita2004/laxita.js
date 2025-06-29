@@ -1,0 +1,12 @@
+// This tells Babel:
+// "When compiling JSX, use createElement() (not React) and output normal JS."
+
+{
+    "presets": [
+        ["@babel/preset-react", {
+            "pragma": "createElement",
+            "runtime": "classic"
+        }],
+        "@babel/preset-env"
+    ]
+}

@@ -7,6 +7,8 @@
             "pragma": "createElement",
             "runtime": "classic"
         }],
-        "@babel/preset-env"
+        ["@babel/preset-env", {
+            "modules": false
+        }]
     ]
 }

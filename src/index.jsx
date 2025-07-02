@@ -1,22 +1,20 @@
 /** @jsx createElement */
 
 import { createElement } from "./createElement.js";
-import { render, rerender } from "./render.js";
+import { render } from "./render.js";
+import { useState } from "./hook.js";
 
 let count = 0;
 
-function handleClick() {
-  count++;
-  rerender(App());
-}
-
 console.log("JS running...");
 
-function App() {
+function Counter() {
+  const [count, setCount] = useState(0);
+
   return (
     <div>
-      <h1 onClick={handleClick}>Click me</h1>
-      <p>You've clicked {count} times</p>
+      <h1>Count: {count}</h1>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
     </div>
   );
 }
@@ -36,5 +34,5 @@ function App() {
 
 window.onload = () => {
   const container = document.getElementById("app");
-  render(App(), container);
+  render(<Counter />, container);
 };

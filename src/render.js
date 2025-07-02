@@ -1,6 +1,16 @@
+let rootContainer = null;
+
 export function render(vnode, container) {
+    rootContainer = container;
     const dom = createDom(vnode);
+    container.innerHTML = ""; // clean before rendering
     container.appendChild(dom);
+}
+
+export function rerender(vnode) {
+  if (rootContainer) {
+    render(vnode, rootContainer);
+  }
 }
 
 function createDom(vnode) {

@@ -11,7 +11,8 @@ export function createElement(type, props, ...children) {
         props: {
             ...props,
             children: normalizedChildren
-        }
+        },
+        key: props?.key
     };
 }
 

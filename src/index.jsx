@@ -4,17 +4,23 @@ import { createElement } from "./createElement.js";
 import { render } from "./render.js";
 import { useState } from "./hook.js";
 
-let count = 0;
-
 console.log("JS running...");
 
-function Counter() {
-  const [count, setCount] = useState(0);
+function App() {
+  const [items, setItems] = useState(["a", "b", "c"]);
+
+  const shuffle = () => {
+    setItems((prev) => [...prev].reverse());
+  };
 
   return (
     <div>
-      <h1>Count: {count}</h1>
-      <button onClick={() => setCount(count + 1)}>Increment</button>
+      <button onClick={shuffle}>Reverse</button>
+      <ul>
+        {items.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
     </div>
   );
 }
@@ -34,5 +40,5 @@ function Counter() {
 
 window.onload = () => {
   const container = document.getElementById("app");
-  render(<Counter />, container);
+  render(<App />, container);
 };

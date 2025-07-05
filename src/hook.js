@@ -47,6 +47,31 @@ export function useEffect(effect, deps) {
   effectIndex++;
 }
 
+export function useMemo(callback, deps) {
+  const hookIndex = currentHook;
+  const oldHook = hooks[hookIndex];
+
+  const hasChanged = !oldHook || !areDepsSame(oldHook.deps, deps);
+
+  if (hasChanged) {
+    const value = callback();
+    hooks[hookIndex] = { value, deps };
+  }
+
+  const memoizedValue = hooks[hookIndex].value;
+
+  currentHook++;
+  return memoizedValue;
+}
+
+function areDepsSame(oldDeps = [], newDeps = []) {
+  if (oldDeps.length !== newDeps.length) return false;
+  for (let i = 0; i < oldDeps.length; i++) {
+    if (oldDeps[i] !== newDeps[i]) return false;
+  }
+  return true;
+}
+
 export function resetHooks() {
   currentHook = 0;
   effectIndex = 0;

@@ -3,7 +3,7 @@
 
 import { createElement, Fragment } from "./createElement.js";
 import { render } from "./render.js";
-import { useState, useEffect } from "./hook.js";
+import { useState, useEffect, useMemo } from "./hook.js";
 
 console.log("JS running...");
 window.laxitaDevtools = true;
@@ -17,11 +17,22 @@ function Card(props) {
 }
 
 function App() {
+  const [num, setNum] = useState(1);
+
+  const expensiveResult = useMemo(() => {
+    console.log("Recomputing...");
+    let total = 0;
+    for (let i = 0; i < 1e7; i++) {
+      total += num;
+    }
+    return total;
+  }, [num]);
+
   return (
-    <>
-      <h1>Hello!</h1>
-      <p>From a custom Fragment</p>
-    </>
+    <div>
+      <p>Expensive calc result: {expensiveResult}</p>
+      <button onClick={() => setNum(num + 1)}>+1</button>
+    </div>
   );
 }
 

@@ -5,7 +5,8 @@
     "presets": [
         ["@babel/preset-react", {
             "pragma": "createElement",
-            "runtime": "classic"
+            "runtime": "classic",
+            "pragmaFrag": "Fragment"
         }],
         ["@babel/preset-env", {
             "modules": false

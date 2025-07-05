@@ -1,6 +1,7 @@
 /** @jsx createElement */
+/** @jsxFrag Fragment */
 
-import { createElement } from "./createElement.js";
+import { createElement, Fragment } from "./createElement.js";
 import { render } from "./render.js";
 import { useState, useEffect } from "./hook.js";
 
@@ -11,15 +12,28 @@ function Welcome(props) {
   return <h2>👋 Hello, {props.name}!</h2>;
 }
 
+function Card(props) {
+  return <div className="card">{props.children}</div>;
+}
+
 function App() {
   return (
-    <div>
-      <h1>Welcome to laxita.js</h1>
-      <Welcome name="Laxita" />
-      <Welcome name="Arjun" />
-    </div>
+    <>
+      <h1>Hello!</h1>
+      <p>From a custom Fragment</p>
+    </>
   );
 }
+
+// function App() {
+//   return (
+//     <div>
+//       <h1>Welcome to laxita.js</h1>
+//       <Welcome name="Laxita" />
+//       <Welcome name="Arjun" />
+//     </div>
+//   );
+// }
 
 window.onload = () => {
   const container = document.getElementById("app");

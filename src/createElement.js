@@ -23,6 +23,8 @@ export function createElement(type, props, ...children) {
   return finalVNode;
 }
 
+export const Fragment = Symbol("Fragment");
+
 function createTextElement(text) {
     return {
         type: "TEXT_ELEMENT",

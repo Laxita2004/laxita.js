@@ -1,5 +1,6 @@
 import { resetHooks, runAllCleanups } from "./hook.js";
 import { updateDom } from "./diff.js";
+import { Fragment } from "./createElement.js";
 
 let rootContainer = null;
 let rootVNode = null;
@@ -68,6 +69,18 @@ function createDom(vnode) {
 
   if (vnode.type === "TEXT_ELEMENT") {
     return document.createTextNode(vnode.props.nodeValue);
+  }
+
+  if (vnode.type === Fragment) {
+    const fragment = document.createDocumentFragment();
+
+    (vnode.props.children || []).forEach((child) => {
+      fragment.appendChild(createDom(child));
+    });
+
+    console.log("Rendering Fragment:", vnode.props.children);
+
+    return fragment;
   }
 
   const dom = document.createElement(vnode.type);

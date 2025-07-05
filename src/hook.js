@@ -2,29 +2,60 @@ import { rerender } from "./render.js";
 
 let hooks = [];
 let currentHook = 0;
+let effectIndex = 0;
+let prevDepsList = [];
+let cleanupFns = [];
 
 export function useState(initialValue) {
   const hookIndex = currentHook;
 
   hooks[hookIndex] = hooks[hookIndex] ?? initialValue;
-console.log("useState hook", hookIndex, hooks[hookIndex]);
+  console.log("useState hook", hookIndex, hooks[hookIndex]);
 
   const setState = (newValue) => {
-  const valueToStore = typeof newValue === "function"
-    ? newValue(hooks[hookIndex])
-    : newValue;
+    const valueToStore =
+      typeof newValue === "function" ? newValue(hooks[hookIndex]) : newValue;
 
-  hooks[hookIndex] = valueToStore;
-  rerender();
-  console.log("Setting state at", hookIndex, "to", hooks[hookIndex]);
-
-};
+    hooks[hookIndex] = valueToStore;
+    rerender();
+    console.log("Setting state at", hookIndex, "to", hooks[hookIndex]);
+  };
 
   currentHook++;
 
   return [hooks[hookIndex], setState];
 }
 
+export function useEffect(effect, deps) {
+  const hasNoDeps = !deps;
+  const prevDeps = prevDepsList[effectIndex];
+  const hasChanged =
+    hasNoDeps || !prevDeps || deps.some((dep, i) => dep !== prevDeps[i]);
+
+  if (hasChanged) {
+    if (typeof cleanupFns[effectIndex] === "function") {
+      cleanupFns[effectIndex]();
+    }
+
+    const cleanup = effect();
+    if (typeof cleanup === "function") {
+      cleanupFns[effectIndex] = cleanup;
+    }
+    prevDepsList[effectIndex] = deps;
+  }
+
+  effectIndex++;
+}
+
 export function resetHooks() {
-    currentHook = 0;
+  currentHook = 0;
+  effectIndex = 0;
+}
+
+export function runAllCleanups() {
+  cleanupFns.forEach((fn) => {
+    if (typeof fn === "function") fn();
+  });
+  cleanupFns = [];
+  prevDepsList = [];
 }

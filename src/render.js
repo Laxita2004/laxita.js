@@ -1,4 +1,4 @@
-import { resetHooks } from "./hook.js";
+import { resetHooks, runAllCleanups } from "./hook.js";
 import { updateDom } from "./diff.js";
 
 let rootContainer = null;
@@ -7,11 +7,14 @@ let rootVNode = null;
 export function render(vnode, container) {
   rootContainer = container;
   rootVNode = vnode;
+  runAllCleanups();
   resetHooks();
 
   const dom = createDom(vnode);
   container.innerHTML = ""; // clean before rendering
   container.appendChild(dom);
+
+  console.log("Virtual DOM", JSON.stringify(vnode, null, 2));
 }
 
 export function rerender() {
@@ -25,24 +28,20 @@ function reconcileChildren(parentDom, oldVChildren, newVChildren) {
   const nonKeyedOld = [];
 
   oldVChildren.forEach((child, index) => {
-    if (child.key != null) {
+    if (child?.key != null) {
       keyedOld[child.key] = child;
     } else {
       nonKeyedOld.push({ child, index });
     }
   });
 
-  let lastPlacedIndex = 0;
-
   newVChildren.forEach((newVNode, newIndex) => {
-    const key = newVNode.key;
     let oldVNode;
 
-    if (key != null && keyedOld[key]) {
-      oldVNode = keyedOld[key];
-      delete keyedOld[key];
+    if (newVNode.key != null && keyedOld[newVNode.key]) {
+      oldVNode = keyedOld[newVNode.key];
     } else if (nonKeyedOld.length > 0) {
-      oldVNode = nonKeyedOld.shift().child;
+      oldVNode = nonKeyedOld.shift();
     }
 
     const newDom = createDom(newVNode);
@@ -77,21 +76,10 @@ function createDom(vnode) {
   updateDom(dom, vnode.oldProps, vnode.props);
   vnode.oldProps = vnode.props;
 
-  const isListener = (name) => name.startsWith("on");
-  const isAttribute = (name) => name !== "children";
-
-  Object.entries(vnode.props || {}).forEach(([name, value]) => {
-    if (isListener(name)) {
-      const eventType = name.toLowerCase().substring(2);
-      dom.addEventListener(eventType, value);
-    } else if (isAttribute(name)) {
-      dom.setAttribute(name, value);
-    }
-  });
-
   const oldChildren = vnode.oldProps?.children || [];
+  const newChildren = vnode.props?.children || [];
 
-  reconcileChildren(dom, oldChildren, vnode.props.children || []);
+  reconcileChildren(dom, oldChildren, newChildren);
 
   return dom;
 }

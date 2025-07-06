@@ -1,0 +1,98 @@
+*{
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f5f7fa;
+  padding: 2rem;
+  color: #333;
+}
+
+.portfolio {
+    max-width: 100vw;
+    margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.intro {
+  text-align: center;
+}
+
+.intro h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.intro p {
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.card img {
+    width: 200px;
+}
+
+h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+/* Like Button */
+.like-btn {
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  background-color: #ff577f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.like-btn:hover {
+  background-color: #ff3366;
+}

@@ -1,4 +1,5 @@
 import { rerender } from "./render.js";
+import { DEV } from "./dev.js";
 
 let hooks = [];
 let currentHook = 0;
@@ -10,19 +11,27 @@ export function useState(initialValue) {
   const hookIndex = currentHook;
 
   hooks[hookIndex] = hooks[hookIndex] ?? initialValue;
-  console.log("useState hook", hookIndex, hooks[hookIndex]);
 
   const setState = (newValue) => {
     const valueToStore =
       typeof newValue === "function" ? newValue(hooks[hookIndex]) : newValue;
 
+    if (DEV) {
+      console.log(`[useState] index ${hookIndex} →`, {
+        oldValue: hooks[hookIndex],
+        newValue: valueToStore,
+      });
+    }
+
     hooks[hookIndex] = valueToStore;
     rerender();
-    console.log("Setting state at", hookIndex, "to", hooks[hookIndex]);
   };
 
-  currentHook++;
+  if (DEV) {
+    console.log(`[hook] useState[${hookIndex}] →`, hooks[hookIndex]);
+  }
 
+  currentHook++;
   return [hooks[hookIndex], setState];
 }
 
@@ -34,6 +43,7 @@ export function useEffect(effect, deps) {
 
   if (hasChanged) {
     if (typeof cleanupFns[effectIndex] === "function") {
+      if (DEV) console.log(`[useEffect] cleanup for effect[${effectIndex}]`);
       cleanupFns[effectIndex]();
     }
 
@@ -42,6 +52,10 @@ export function useEffect(effect, deps) {
       cleanupFns[effectIndex] = cleanup;
     }
     prevDepsList[effectIndex] = deps;
+
+    if (DEV) {
+      console.log(`[hook] useEffect[${effectIndex}] triggered → deps:`, deps);
+    }
   }
 
   effectIndex++;
@@ -56,6 +70,12 @@ export function useMemo(callback, deps) {
   if (hasChanged) {
     const value = callback();
     hooks[hookIndex] = { value, deps };
+
+    if (DEV) {
+      console.log(`[hook] useMemo[${hookIndex}]: recomputed`);
+    }
+  } else if (DEV) {
+    console.log(`[hook] useMemo[${hookIndex}]: reused cached value`);
   }
 
   const memoizedValue = hooks[hookIndex].value;

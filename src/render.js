@@ -1,6 +1,7 @@
 import { resetHooks, runAllCleanups } from "./hook.js";
 import { updateDom } from "./diff.js";
 import { Fragment } from "./createElement.js";
+import { DEV, trackRender, logPropChanges } from "./dev.js";
 
 let rootContainer = null;
 let rootVNode = null;
@@ -63,7 +64,19 @@ function reconcileChildren(parentDom, oldVChildren, newVChildren) {
 
 function createDom(vnode) {
   if (typeof vnode.type === "function") {
+    const name = vnode.type.name || "AnonymousComponent";
+
+    if (DEV) {
+      console.group(`[render] <${name}>`);
+      trackRender(name);
+
+      if (vnode.oldProps) {
+        logPropChanges(vnode.oldProps, vnode.props);
+      }
+    }
+
     const componentVNode = vnode.type(vnode.props || {});
+    if (DEV) console.groupEnd();
     return createDom(componentVNode);
   }
 
@@ -73,13 +86,11 @@ function createDom(vnode) {
 
   if (vnode.type === Fragment) {
     const fragment = document.createDocumentFragment();
-
     (vnode.props.children || []).forEach((child) => {
       fragment.appendChild(createDom(child));
     });
 
-    console.log("Rendering Fragment:", vnode.props.children);
-
+    if (DEV) console.log("Rendering Fragment:", vnode.props.children);
     return fragment;
   }
 

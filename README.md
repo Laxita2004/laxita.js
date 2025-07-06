@@ -20,7 +20,7 @@ It supports things like:
 - index.html – basic HTML wrapper
 
 ## 🔧 How to Run
-Clone the project
-Compile the JSX:
+- Clone the project
+- Compile the JSX:
 `npx babel src/index.jsx --out-file dist/index.js`
-Open index.html in browser (Live Server works great)
+- Open index.html in browser (Live Server works great)

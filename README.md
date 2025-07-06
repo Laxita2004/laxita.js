@@ -9,3 +9,18 @@ It supports things like:
 - useState, useEffect, useMemo
 - Virtual DOM and re-rendering
 - Developer logs using dev.js
+
+## 📁 Files Overview
+- index.jsx – main app (portfolio page)
+- createElement.js – handles JSX
+- render.js – creates and updates DOM
+- hook.js – handles state and effects
+- dev.js – logs component renders and prop changes
+- style.css – simple styling
+- index.html – basic HTML wrapper
+
+## 🔧 How to Run
+Clone the project
+Compile the JSX:
+`npx babel src/index.jsx --out-file dist/index.js`
+Open index.html in browser (Live Server works great)

@@ -11,7 +11,7 @@ It supports things like:
 - Developer logs using dev.js
 
 ## 📁 Files Overview
-- index.jsx – main app (portfolio page)
+- index.jsx – main app (portfolio page) - for testing
 - createElement.js – handles JSX
 - render.js – creates and updates DOM
 - hook.js – handles state and effects

@@ -1,4 +1,4 @@
-export function updateDom(dom, prevProps, nextProps) {
+export function patchProps(dom, prevProps, nextProps) {
   const isListener = (name) => name.startsWith("on");
   const isAttribute = (name) => name !== "children" && !isListener(name);
 

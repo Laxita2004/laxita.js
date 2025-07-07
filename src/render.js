@@ -1,7 +1,8 @@
 import { resetHooks, runAllCleanups } from "./hook.js";
-import { updateDom } from "./diff.js";
+import { patchProps } from "./diff.js";
 import { Fragment } from "./createElement.js";
 import { DEV, trackRender, logPropChanges } from "./dev.js";
+import { updateDom } from "./updateDom.js"
 
 let rootContainer = null;
 let rootVNode = null;

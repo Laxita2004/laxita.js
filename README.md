@@ -2,7 +2,7 @@
 **laxita.js** is a lightweight JavaScript UI library built entirely from scratch — without using React or any third-party frameworks. It replicates the core architecture of React, including **JSX rendering**, **component system**, **virtual DOM diffing**, and **custom hooks** like `useState`, `useEffect`, and `useMemo`.
 
 What sets laxita.js apart is its **focus on solving a real frontend pain point**:
-> As frontend developers, I found that **debugging render logic in complex UIs often relies on scattered `console.log()` statements**, making it hard to track re-renders, prop changes, and lifecycle events effectively.
+> I found that **debugging render logic in complex UIs often relies on scattered `console.log()` statements**, making it hard to track re-renders, prop changes, and lifecycle events effectively.
 
 To solve this, I introduced a **dev-only logging layer (`dev.js`)** that provides structured console logs for:
 * When a component mounts, unmounts, or re-renders
